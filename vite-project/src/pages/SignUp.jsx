@@ -3,6 +3,8 @@ import { Container, Form, Button } from "react-bootstrap";
 import '../styles/SignUp.css';
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
+import API_URL from "../../config/global";
 
 const SignUp = () => {
 
@@ -20,8 +22,19 @@ const SignUp = () => {
         })
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        try {
+            const response = await axios.post(`${API_URL}/signup/verify`, formData);
+            console.log(response);
+            if (response.data === true) {
+                alert("Registration link send to your mail");
+            } else if (response.data === false) {
+                alert("User already exits");
+            }
+        } catch (error) {
+            console.error("Error during registration", error);
+        }
          console.log(formData);
     }
 
